@@ -36,20 +36,25 @@ const PostsDisplay = function () {
 
   const inputForm = (
     <form
-      className="InputForm"
       onSubmit={(evt) => {
         evt.preventDefault();
-        base('Posts').create(
-          [
-            {
-              fields: {
-                Body: body,
-                Author: author,
-              },
+        base('Posts').create([
+          {
+            fields: {
+              Body: body,
+              Author: author,
             },
-          ],
-          getPosts(),
-        );
+          },
+        ], (err, records) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          records.forEach((record) => {
+            console.log(record.getId());
+          });
+        });
+        getPosts();
       }}
     >
       <label>
@@ -68,11 +73,11 @@ const PostsDisplay = function () {
 
   return (
     <div className="App">
-      <h1 className="Title">Printer</h1>
-      <div className="Input">
+      <h1>Printer</h1>
+      <div>
         {inputForm}
       </div>
-      <div className="Posts">
+      <div>
         {displayPosts}
       </div>
     </div>
